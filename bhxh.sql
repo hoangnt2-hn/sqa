@@ -24,10 +24,10 @@ DROP TABLE IF EXISTS `account`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
+  `username` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `password` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -53,7 +53,7 @@ CREATE TABLE `address` (
   `district` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
   `town` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,6 +67,54 @@ INSERT INTO `address` VALUES (1,'Hà Nội','Chương Mỹ','Phụng Châu'),(11
 UNLOCK TABLES;
 
 --
+-- Table structure for table `area`
+--
+
+DROP TABLE IF EXISTS `area`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `area` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `min_sal` double DEFAULT NULL,
+  `max_sal` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `area`
+--
+
+LOCK TABLES `area` WRITE;
+/*!40000 ALTER TABLE `area` DISABLE KEYS */;
+/*!40000 ALTER TABLE `area` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `coefficient`
+--
+
+DROP TABLE IF EXISTS `coefficient`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `coefficient` (
+  `id` int(12) NOT NULL AUTO_INCREMENT,
+  `coe` double DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `coefficient`
+--
+
+LOCK TABLES `coefficient` WRITE;
+/*!40000 ALTER TABLE `coefficient` DISABLE KEYS */;
+/*!40000 ALTER TABLE `coefficient` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `role`
 --
 
@@ -75,9 +123,9 @@ DROP TABLE IF EXISTS `role`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
+  `name` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,7 +151,7 @@ CREATE TABLE `salary` (
   `position_allowrance` double DEFAULT NULL,
   `res_allowrance` double DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -126,7 +174,9 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `full_name` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
-  `area` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `id_person` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `date_of_birth` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `sex` tinyint(1) DEFAULT NULL,
   `is_vol` tinyint(1) DEFAULT NULL,
   `carrer` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
   `free` tinyint(1) DEFAULT NULL,
@@ -136,16 +186,19 @@ CREATE TABLE `user` (
   `address_id` int(11) DEFAULT NULL,
   `account_id` int(11) DEFAULT NULL,
   `salary_id` int(11) DEFAULT NULL,
+  `area_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_role_idx` (`role_id`),
   KEY `user_address_idx` (`address_id`),
   KEY `user_account_idx` (`account_id`),
   KEY `user_salary_idx` (`salary_id`),
+  KEY `user_area_idx` (`area_id`),
   CONSTRAINT `user_account` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `user_address` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `user_area` FOREIGN KEY (`area_id`) REFERENCES `area` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `user_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `user_salary` FOREIGN KEY (`salary_id`) REFERENCES `salary` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +207,6 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Nguyễn Trí Hoàng','Hà Nội',0,'aa',0,'aaa','111111111',1,1,1,1),(10,'Nguy?n Trí Hoàngg','Hà N?i',0,'aa',0,'aaa','111111111',2,11,11,11),(11,'Nguy?n Trí Hoànggg','Hà N?i',0,'aa',0,'aaa','111111111',2,12,12,12);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -167,4 +219,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-21  1:32:09
+-- Dump completed on 2019-02-23 23:47:12

@@ -3,13 +3,18 @@ package com.hoangnt.model;
 public class UserDTO {
 	Integer id;
 	String full_name;
-	String area;
+
+	String id_person;
+	String date_of_birth;
+	boolean sex;
+
 	boolean is_vol;
 	String carrer;
 	boolean free;
 	String free_detail;
 	String phone;
 	Integer role_id;
+	Integer area_id;
 	private AddressDTO addressDTO;
 	private AccountDTO accountDTO;
 	private SalaryDTO salaryDTO;
@@ -28,14 +33,6 @@ public class UserDTO {
 
 	public void setFull_name(String full_name) {
 		this.full_name = full_name;
-	}
-
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
 	}
 
 	public boolean isIs_vol() {
@@ -108,6 +105,38 @@ public class UserDTO {
 
 	public void setSalaryDTO(SalaryDTO salaryDTO) {
 		this.salaryDTO = salaryDTO;
+	}
+
+	public String getId_person() {
+		return id_person;
+	}
+
+	public void setId_person(String id_person) {
+		this.id_person = id_person;
+	}
+
+	public String getDate_of_birth() {
+		return date_of_birth;
+	}
+
+	public void setDate_of_birth(String date_of_birth) {
+		this.date_of_birth = date_of_birth;
+	}
+
+	public boolean isSex() {
+		return sex;
+	}
+
+	public void setSex(boolean sex) {
+		this.sex = sex;
+	}
+
+	public Integer getArea_id() {
+		return area_id;
+	}
+
+	public void setArea_id(Integer area_id) {
+		this.area_id = area_id;
 	}
 
 }

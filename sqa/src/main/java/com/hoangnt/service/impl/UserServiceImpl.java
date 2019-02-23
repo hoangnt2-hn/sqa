@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 
 import com.hoangnt.entity.Account;
 import com.hoangnt.entity.Address;
+import com.hoangnt.entity.Area;
 import com.hoangnt.entity.Role;
 import com.hoangnt.entity.Salary;
 import com.hoangnt.entity.User;
 import com.hoangnt.model.AccountDTO;
 import com.hoangnt.model.AddressDTO;
+import com.hoangnt.model.AreaDTO;
 import com.hoangnt.model.SalaryDTO;
 import com.hoangnt.model.UserDTO;
 import com.hoangnt.repository.AccountRepository;
@@ -47,7 +49,11 @@ public class UserServiceImpl implements UserService {
 
 			userDTO.setId(user.getId());
 			userDTO.setFull_name(user.getFull_name());
-			userDTO.setArea(user.getArea());
+
+			userDTO.setId_person(user.getId_person());
+			userDTO.setDate_of_birth(user.getDate_of_birth());
+			userDTO.setSex(user.isSex());
+
 			userDTO.setIs_vol(user.isIs_vol());
 			userDTO.setCarrer(user.getCarrer());
 			userDTO.setFree(user.isFree());
@@ -55,6 +61,7 @@ public class UserServiceImpl implements UserService {
 			userDTO.setPhone(user.getPhone());
 
 			userDTO.setRole_id(user.getRole().getId());
+			userDTO.setArea_id(user.getArea().getId());
 
 			AccountDTO accountDTO = new AccountDTO();
 			accountDTO.setId(user.getAccount().getId());
@@ -90,7 +97,11 @@ public class UserServiceImpl implements UserService {
 			UserDTO userDTO = new UserDTO();
 			userDTO.setId(user.getId());
 			userDTO.setFull_name(user.getFull_name());
-			userDTO.setArea(user.getArea());
+
+			userDTO.setId_person(user.getId_person());
+			userDTO.setDate_of_birth(user.getDate_of_birth());
+			userDTO.setSex(user.isSex());
+
 			userDTO.setIs_vol(user.isIs_vol());
 			userDTO.setCarrer(user.getCarrer());
 			userDTO.setFree(user.isFree());
@@ -98,6 +109,7 @@ public class UserServiceImpl implements UserService {
 			userDTO.setPhone(user.getPhone());
 
 			userDTO.setRole_id(user.getRole().getId());
+			userDTO.setArea_id(user.getArea().getId());
 
 			AccountDTO accountDTO = new AccountDTO();
 			accountDTO.setId(user.getAccount().getId());
@@ -132,7 +144,11 @@ public class UserServiceImpl implements UserService {
 		User user = new User();
 
 		user.setFull_name(userDTO.getFull_name());
-		user.setArea(userDTO.getArea());
+
+		user.setId_person(userDTO.getId_person());
+		user.setDate_of_birth(userDTO.getDate_of_birth());
+		user.setSex(userDTO.isSex());
+
 		user.setIs_vol(userDTO.isIs_vol());
 		user.setCarrer(userDTO.getCarrer());
 		user.setFree(userDTO.isFree());
@@ -159,6 +175,8 @@ public class UserServiceImpl implements UserService {
 		salaryRepository.save(salary);
 		user.setSalary(salary);
 
+		user.setArea(new Area(userDTO.getArea_id()));
+
 		user.setRole(new Role(userDTO.getRole_id()));
 
 		userRepository.save(user);
@@ -169,7 +187,11 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.getOne(userDTO.getId());
 
 		user.setFull_name(userDTO.getFull_name());
-		user.setArea(userDTO.getArea());
+
+		user.setId_person(userDTO.getId_person());
+		user.setDate_of_birth(userDTO.getDate_of_birth());
+		user.setSex(userDTO.isSex());
+
 		user.setIs_vol(userDTO.isIs_vol());
 		user.setCarrer(userDTO.getCarrer());
 		user.setFree(userDTO.isFree());
@@ -197,6 +219,7 @@ public class UserServiceImpl implements UserService {
 		user.setSalary(salary);
 
 		user.setRole(new Role(userDTO.getRole_id()));
+		user.setArea(new Area(userDTO.getArea_id()));
 
 		userRepository.save(user);
 
@@ -210,7 +233,11 @@ public class UserServiceImpl implements UserService {
 
 			userDTO.setId(user.getId());
 			userDTO.setFull_name(user.getFull_name());
-			userDTO.setArea(user.getArea());
+
+			userDTO.setId_person(user.getId_person());
+			userDTO.setDate_of_birth(user.getDate_of_birth());
+			userDTO.setSex(user.isSex());
+
 			userDTO.setIs_vol(user.isIs_vol());
 			userDTO.setCarrer(user.getCarrer());
 			userDTO.setFree(user.isFree());
@@ -218,6 +245,7 @@ public class UserServiceImpl implements UserService {
 			userDTO.setPhone(user.getPhone());
 
 			userDTO.setRole_id(user.getRole().getId());
+			userDTO.setArea_id(user.getArea().getId());
 
 			AccountDTO accountDTO = new AccountDTO();
 			accountDTO.setId(user.getAccount().getId());

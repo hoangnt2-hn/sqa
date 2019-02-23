@@ -20,8 +20,13 @@ public class User {
 	Integer id;
 	@Column(name = "full_name")
 	String full_name;
-
-	String area;
+	
+	
+	String id_person;
+	String date_of_birth;
+	boolean sex;
+	
+	
 	boolean is_vol;
 	String carrer;
 	boolean free;
@@ -32,7 +37,11 @@ public class User {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_id")
 	Role role;
-
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="area_id")
+	Area area;
+	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "address_id")
 	private Address address;
@@ -75,14 +84,6 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
-	}
-
-	public String getArea() {
-		return area;
-	}
-
-	public void setArea(String area) {
-		this.area = area;
 	}
 
 	public boolean isIs_vol() {
@@ -141,4 +142,36 @@ public class User {
 		this.salary = salary;
 	}
 
+	public String getId_person() {
+		return id_person;
+	}
+
+	public void setId_person(String id_person) {
+		this.id_person = id_person;
+	}
+
+	public String getDate_of_birth() {
+		return date_of_birth;
+	}
+
+	public void setDate_of_birth(String date_of_birth) {
+		this.date_of_birth = date_of_birth;
+	}
+
+	public boolean isSex() {
+		return sex;
+	}
+
+	public void setSex(boolean sex) {
+		this.sex = sex;
+	}
+
+	public Area getArea() {
+		return area;
+	}
+
+	public void setArea(Area area) {
+		this.area = area;
+	}
+	
 }
