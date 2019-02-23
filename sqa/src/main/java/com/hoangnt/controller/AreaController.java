@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hoangnt.model.AreaDTO;
 import com.hoangnt.service.AreaService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 public class AreaController {
 

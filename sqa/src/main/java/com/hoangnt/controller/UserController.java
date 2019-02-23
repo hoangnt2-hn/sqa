@@ -18,7 +18,7 @@ import com.hoangnt.model.AccountDTO;
 import com.hoangnt.model.UserDTO;
 import com.hoangnt.service.UserService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 public class UserController {
 

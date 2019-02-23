@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hoangnt.model.CoefficientDTO;
 import com.hoangnt.service.CoefficientService;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
 public class CoefficientController {
 	@Autowired
