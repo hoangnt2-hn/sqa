@@ -33,14 +33,22 @@ public class UserController {
 
 	@PostMapping("/users/register")
 	public ResponseEntity<Void> addUser(@RequestBody UserDTO userDTO) {
-		userService.addUserDTO(userDTO);
-		return new ResponseEntity<Void>(HttpStatus.CREATED);
+		if (userService.getUserByFull_name("account.username", userDTO.getAccountDTO().getUsername()).equals(null)) {
+			userService.addUserDTO(userDTO);
+			return new ResponseEntity<Void>(HttpStatus.CREATED);
+		} else
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 
 	}
 
 	@GetMapping("/users/{id}")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
 		return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+	}
+
+	@GetMapping("/users/name/{name}")
+	public ResponseEntity<UserDTO> getUserByFull_name(@PathVariable String name) {
+		return new ResponseEntity<>(userService.getUserByFull_name("full_name", name), HttpStatus.OK);
 	}
 
 	@GetMapping("/users")

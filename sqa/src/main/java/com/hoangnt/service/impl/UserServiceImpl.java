@@ -16,7 +16,6 @@ import com.hoangnt.entity.Salary;
 import com.hoangnt.entity.User;
 import com.hoangnt.model.AccountDTO;
 import com.hoangnt.model.AddressDTO;
-import com.hoangnt.model.AreaDTO;
 import com.hoangnt.model.SalaryDTO;
 import com.hoangnt.model.UserDTO;
 import com.hoangnt.repository.AccountRepository;
@@ -44,99 +43,37 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO login(String username, String password) {
 		User user = userRepository.login(username, password);
-		UserDTO userDTO = new UserDTO();
-		if (user.getId() > 0) {
-
-			userDTO.setId(user.getId());
-			userDTO.setFull_name(user.getFull_name());
-
-			userDTO.setId_person(user.getId_person());
-			userDTO.setDate_of_birth(user.getDate_of_birth());
-			userDTO.setSex(user.isSex());
-
-			userDTO.setIs_vol(user.isIs_vol());
-			userDTO.setCarrer(user.getCarrer());
-			userDTO.setFree(user.isFree());
-			userDTO.setFree_detail(user.getFree_detail());
-			userDTO.setPhone(user.getPhone());
-
-			userDTO.setRole_id(user.getRole().getId());
-			userDTO.setArea_id(user.getArea().getId());
-
-			AccountDTO accountDTO = new AccountDTO();
-			accountDTO.setId(user.getAccount().getId());
-			accountDTO.setUsername(user.getAccount().getUsername());
-			accountDTO.setPassword(user.getAccount().getPassword());
-
-			userDTO.setAccountDTO(accountDTO);
-
-			AddressDTO addressDTO = new AddressDTO();
-			addressDTO.setId(user.getAddress().getId());
-			addressDTO.setDistrict(user.getAddress().getDistrict());
-			addressDTO.setProvince(user.getAddress().getProvince());
-			addressDTO.setTown(user.getAddress().getTown());
-
-			userDTO.setAddressDTO(addressDTO);
-
-			SalaryDTO salaryDTO = new SalaryDTO();
-			salaryDTO.setId(user.getSalary().getId());
-			salaryDTO.setMain_sal(user.getSalary().getMain_sal());
-			salaryDTO.setPosition_allowrance(user.getSalary().getPosition_allowrance());
-			salaryDTO.setRes_allowrance(user.getSalary().getRes_allowrance());
-
-			userDTO.setSalaryDTO(salaryDTO);
-
-		}
-		return userDTO;
+		return middleware(user);
 	}
 
 	@Override
 	public List<UserDTO> getAllUser() {
 		List<UserDTO> userDTOs = new ArrayList<UserDTO>();
 		userRepository.findAll().forEach(user -> {
-			UserDTO userDTO = new UserDTO();
-			userDTO.setId(user.getId());
-			userDTO.setFull_name(user.getFull_name());
-
-			userDTO.setId_person(user.getId_person());
-			userDTO.setDate_of_birth(user.getDate_of_birth());
-			userDTO.setSex(user.isSex());
-
-			userDTO.setIs_vol(user.isIs_vol());
-			userDTO.setCarrer(user.getCarrer());
-			userDTO.setFree(user.isFree());
-			userDTO.setFree_detail(user.getFree_detail());
-			userDTO.setPhone(user.getPhone());
-
-			userDTO.setRole_id(user.getRole().getId());
-			userDTO.setArea_id(user.getArea().getId());
-
-			AccountDTO accountDTO = new AccountDTO();
-			accountDTO.setId(user.getAccount().getId());
-			accountDTO.setUsername(user.getAccount().getUsername());
-			accountDTO.setPassword(user.getAccount().getPassword());
-
-			userDTO.setAccountDTO(accountDTO);
-
-			AddressDTO addressDTO = new AddressDTO();
-			addressDTO.setId(user.getAddress().getId());
-			addressDTO.setDistrict(user.getAddress().getDistrict());
-			addressDTO.setProvince(user.getAddress().getProvince());
-			addressDTO.setTown(user.getAddress().getTown());
-
-			userDTO.setAddressDTO(addressDTO);
-
-			SalaryDTO salaryDTO = new SalaryDTO();
-			salaryDTO.setId(user.getSalary().getId());
-			salaryDTO.setMain_sal(user.getSalary().getMain_sal());
-			salaryDTO.setPosition_allowrance(user.getSalary().getPosition_allowrance());
-			salaryDTO.setRes_allowrance(user.getSalary().getRes_allowrance());
-
-			userDTO.setSalaryDTO(salaryDTO);
-
-			userDTOs.add(userDTO);
+			userDTOs.add(middleware(user));
 		});
 		return userDTOs;
+	}
+
+	@Override
+	public UserDTO getUserById(int id) {
+		User user = userRepository.getOne(id);
+		return middleware(user);
+	}
+
+	@Override
+	public void deleteUser(int id) {
+//		User user = userRepository.getOne(id);
+		userRepository.deleteById(id);
+//		accountRepository.deleteById(user.getAccount().getId());
+//		addressRepository.deleteById(user.getAddress().getId());
+//		salaryRepository.deleteById(user.getSalary().getId());
+	}
+
+	@Override
+	public UserDTO getUserByFull_name(String nameOrFullName,String full_name) {
+		User user = userRepository.findByFull_name(nameOrFullName,full_name);
+		return middleware(user);
 	}
 
 	@Override
@@ -225,9 +162,7 @@ public class UserServiceImpl implements UserService {
 
 	}
 
-	@Override
-	public UserDTO getUserById(int id) {
-		User user = userRepository.getOne(id);
+	public UserDTO middleware(User user) {
 		UserDTO userDTO = new UserDTO();
 		if (user.getId() > 0) {
 
@@ -274,12 +209,4 @@ public class UserServiceImpl implements UserService {
 		return userDTO;
 	}
 
-	@Override
-	public void deleteUser(int id) {
-//		User user = userRepository.getOne(id);
-		userRepository.deleteById(id);
-//		accountRepository.deleteById(user.getAccount().getId());
-//		addressRepository.deleteById(user.getAddress().getId());
-//		salaryRepository.deleteById(user.getSalary().getId());
-	}
 }

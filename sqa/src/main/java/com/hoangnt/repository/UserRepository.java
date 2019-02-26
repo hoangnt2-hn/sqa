@@ -21,4 +21,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Transactional
 	@Query("SELECT u FROM User u WHERE u.role.id like ?1")
 	public List<User> finByRole(int role_id);
+	
+	@Transactional
+	@Query("SELECT u FROM User u WHERE u.?1 like ?2")
+	public User findByFull_name(String nameOrFullName,String full_name);
 }

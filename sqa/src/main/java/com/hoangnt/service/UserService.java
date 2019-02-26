@@ -11,9 +11,13 @@ public interface UserService {
 	
 	UserDTO getUserById(int id);
 	
+	UserDTO getUserByFull_name(String nameOrFullName,String full_name);
+	
 	void updateUserDTO(UserDTO userDTO);
 
 	void deleteUser(int id);
 	
 	List<UserDTO> getAllUser();
+	
+	
 }
