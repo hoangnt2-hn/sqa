@@ -23,6 +23,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	public List<User> finByRole(int role_id);
 	
 	@Transactional
-	@Query("SELECT u FROM User u WHERE u.?1 like ?2")
-	public User findByFull_name(String nameOrFullName,String full_name);
+	@Query("SELECT u FROM User u WHERE u.full_name like ?1")
+	public User findByFull_name(String full_name);
+	
+	@Transactional
+	@Query("SELECT u FROM User u WHERE u.account.username like ?1")
+	public User findByNameAccount(String name);
 }

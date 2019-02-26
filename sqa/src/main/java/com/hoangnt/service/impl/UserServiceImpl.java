@@ -70,9 +70,15 @@ public class UserServiceImpl implements UserService {
 //		salaryRepository.deleteById(user.getSalary().getId());
 	}
 
+//	@Override
+//	public UserDTO getUserByFull_name(String full_name) {
+//		User user = userRepository.findByFull_name(full_name);
+//		return middleware(user);
+//	}
+
 	@Override
-	public UserDTO getUserByFull_name(String nameOrFullName,String full_name) {
-		User user = userRepository.findByFull_name(nameOrFullName,full_name);
+	public UserDTO getUserByNameAccount(String name) {
+		User user = userRepository.findByNameAccount(name);
 		return middleware(user);
 	}
 

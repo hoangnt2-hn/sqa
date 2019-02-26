@@ -33,7 +33,7 @@ public class UserController {
 
 	@PostMapping("/users/register")
 	public ResponseEntity<Void> addUser(@RequestBody UserDTO userDTO) {
-		if (userService.getUserByFull_name("account.username", userDTO.getAccountDTO().getUsername()).equals(null)) {
+		if (userService.getUserByNameAccount(userDTO.getAccountDTO().getUsername()).equals(null)) {
 			userService.addUserDTO(userDTO);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} else
@@ -43,12 +43,12 @@ public class UserController {
 
 	@GetMapping("/users/{id}")
 	public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
-		return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+		return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
 	}
 
 	@GetMapping("/users/name/{name}")
-	public ResponseEntity<UserDTO> getUserByFull_name(@PathVariable String name) {
-		return new ResponseEntity<>(userService.getUserByFull_name("full_name", name), HttpStatus.OK);
+	public ResponseEntity<UserDTO> getUserByName(@PathVariable String name) {
+		return new ResponseEntity<UserDTO>(userService.getUserByNameAccount(name), HttpStatus.OK);
 	}
 
 	@GetMapping("/users")
