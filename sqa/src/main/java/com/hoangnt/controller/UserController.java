@@ -26,9 +26,12 @@ public class UserController {
 	UserService userService;
 
 	@PostMapping("/login")
-	public ResponseEntity<UserDTO> login(@RequestBody AccountDTO accountDTO) {
-		return new ResponseEntity<UserDTO>(userService.login(accountDTO.getUsername(), accountDTO.getPassword()),
-				HttpStatus.OK);
+	public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO) {
+		if (userService.login(accountDTO.getUsername(), accountDTO.getPassword()) != null) {
+			return new ResponseEntity<UserDTO>(userService.login(accountDTO.getUsername(), accountDTO.getPassword()),
+					HttpStatus.OK);
+		}
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 	@PostMapping("/users/register")
@@ -42,13 +45,19 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{id}")
-	public ResponseEntity<UserDTO> getUserById(@PathVariable int id) {
-		return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
+	public ResponseEntity<?> getUserById(@PathVariable int id) {
+		if (userService.getUserById(id) != null) {
+			return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
+		}
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/users/name/{name}")
-	public ResponseEntity<UserDTO> getUserByName(@PathVariable String name) {
-		return new ResponseEntity<UserDTO>(userService.getUserByNameAccount(name), HttpStatus.OK);
+	public ResponseEntity<?> getUserByName(@PathVariable String name) {
+		if (userService.getUserByNameAccount(name) != null) {
+			return new ResponseEntity<UserDTO>(userService.getUserByNameAccount(name), HttpStatus.OK);
+		}
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/users")
