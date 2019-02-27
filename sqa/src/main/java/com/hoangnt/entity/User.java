@@ -54,6 +54,15 @@ public class User {
 	@JoinColumn(name = "salary_id")
 	private Salary salary;
 
+	public User(Integer id) {
+		super();
+		this.id = id;
+	}
+
+	public User() {
+		super();
+	}
+
 	public Integer getId() {
 		return id;
 	}

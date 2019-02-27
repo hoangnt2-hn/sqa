@@ -33,7 +33,7 @@ public class UserController {
 
 	@PostMapping("/users/register")
 	public ResponseEntity<Void> addUser(@RequestBody UserDTO userDTO) {
-		if (userService.getUserByNameAccount(userDTO.getAccountDTO().getUsername()).equals(null)) {
+		if (userService.getUserByNameAccount(userDTO.getAccountDTO().getUsername()) == null) {
 			userService.addUserDTO(userDTO);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} else

@@ -19,6 +19,15 @@ public class UserDTO {
 	private AccountDTO accountDTO;
 	private SalaryDTO salaryDTO;
 
+	public UserDTO() {
+		super();
+	}
+
+	public UserDTO(Integer id) {
+		super();
+		this.id = id;
+	}
+
 	public Integer getId() {
 		return id;
 	}

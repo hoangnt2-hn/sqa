@@ -79,7 +79,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDTO getUserByNameAccount(String name) {
 		User user = userRepository.findByNameAccount(name);
-		return middleware(user);
+		if(user!=null) {
+			return middleware(user);
+		}
+		return null;
 	}
 
 	@Override
@@ -169,8 +172,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public UserDTO middleware(User user) {
-		UserDTO userDTO = new UserDTO();
-		if (user.getId() > 0) {
+		UserDTO userDTO = new UserDTO(0);
+		if (user.getId()>0) {
 
 			userDTO.setId(user.getId());
 			userDTO.setFull_name(user.getFull_name());
