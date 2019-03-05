@@ -2,6 +2,7 @@ package com.hoangnt.controller;
 
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +28,10 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO) {
-		if (userService.login(accountDTO.getUsername(), accountDTO.getPassword()) != null) {
-			return new ResponseEntity<UserDTO>(userService.login(accountDTO.getUsername(), accountDTO.getPassword()),
-					HttpStatus.OK);
+		UserDTO userDTO = userService.getUserByNameAccount(accountDTO.getUsername());
+		if (userDTO != null && BCrypt.checkpw(accountDTO.getPassword(), userDTO.getAccountDTO().getPassword())) {
+
+			return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 		}
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}

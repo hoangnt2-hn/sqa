@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,14 +41,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	SalaryRepository salaryRepository;
 
-	@Override
-	public UserDTO login(String username, String password) {
-		User user = userRepository.login(username, password);
-		if (user != null) {
-			return middleware(user);
-		}
-		return null;
-	}
 
 	@Override
 	public List<UserDTO> getAllUser() {
@@ -99,17 +92,18 @@ public class UserServiceImpl implements UserService {
 
 		user.setId_person(userDTO.getId_person());
 		user.setDate_of_birth(userDTO.getDate_of_birth());
-		user.setSex(userDTO.isSex());
+		user.setIs_male(userDTO.isIs_male());
 
 		user.setIs_vol(userDTO.isIs_vol());
-		user.setCarrer(userDTO.getCarrer());
-		user.setFree(userDTO.isFree());
+		user.setCareer(userDTO.getCareer());
+		user.setIs_free(userDTO.isIs_free());
 		user.setFree_detail(userDTO.getFree_detail());
 		user.setPhone(userDTO.getPhone());
 
 		Account account = new Account();
 		account.setUsername(userDTO.getAccountDTO().getUsername());
-		account.setPassword(userDTO.getAccountDTO().getPassword());
+		
+		account.setPassword(BCrypt.hashpw(userDTO.getAccountDTO().getPassword(), BCrypt.gensalt(12)));
 		accountRepository.save(account);
 		user.setAccount(account);
 
@@ -142,17 +136,17 @@ public class UserServiceImpl implements UserService {
 
 		user.setId_person(userDTO.getId_person());
 		user.setDate_of_birth(userDTO.getDate_of_birth());
-		user.setSex(userDTO.isSex());
+		user.setIs_male(userDTO.isIs_male());
 
 		user.setIs_vol(userDTO.isIs_vol());
-		user.setCarrer(userDTO.getCarrer());
-		user.setFree(userDTO.isFree());
+		user.setCareer(userDTO.getCareer());
+		user.setIs_free(userDTO.isIs_free());
 		user.setFree_detail(userDTO.getFree_detail());
 		user.setPhone(userDTO.getPhone());
 
 		Account account = user.getAccount();
 		account.setUsername(userDTO.getAccountDTO().getUsername());
-		account.setPassword(userDTO.getAccountDTO().getPassword());
+		account.setPassword(BCrypt.hashpw(userDTO.getAccountDTO().getPassword(), BCrypt.gensalt(12)));
 		accountRepository.save(account);
 		user.setAccount(account);
 
@@ -186,11 +180,11 @@ public class UserServiceImpl implements UserService {
 
 			userDTO.setId_person(user.getId_person());
 			userDTO.setDate_of_birth(user.getDate_of_birth());
-			userDTO.setSex(user.isSex());
+			userDTO.setIs_male(user.isIs_male());
 
 			userDTO.setIs_vol(user.isIs_vol());
-			userDTO.setCarrer(user.getCarrer());
-			userDTO.setFree(user.isFree());
+			userDTO.setCareer(user.getCareer());
+			userDTO.setIs_free(user.isIs_free());
 			userDTO.setFree_detail(user.getFree_detail());
 			userDTO.setPhone(user.getPhone());
 

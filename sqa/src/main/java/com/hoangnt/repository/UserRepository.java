@@ -15,10 +15,6 @@ import com.hoangnt.entity.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Transactional
-	@Query("SELECT u FROM User u WHERE u.account.username=?1 AND u.account.password=?2")
-	public User login(String username, String password);
-
-	@Transactional
 	@Query("SELECT u FROM User u WHERE u.role.id like ?1")
 	public List<User> finByRole(int role_id);
 	

@@ -6,11 +6,11 @@ public class UserDTO {
 
 	String id_person;
 	String date_of_birth;
-	boolean sex;
+	boolean is_male;
 
 	boolean is_vol;
-	String carrer;
-	boolean free;
+	String career;
+	boolean is_free;
 	String free_detail;
 	String phone;
 	Integer role_id;
@@ -52,20 +52,20 @@ public class UserDTO {
 		this.is_vol = is_vol;
 	}
 
-	public String getCarrer() {
-		return carrer;
+	public String getCareer() {
+		return career;
 	}
 
-	public void setCarrer(String carrer) {
-		this.carrer = carrer;
+	public void setCareer(String carrer) {
+		this.career = carrer;
 	}
 
-	public boolean isFree() {
-		return free;
+	public boolean isIs_free() {
+		return is_free;
 	}
 
-	public void setFree(boolean free) {
-		this.free = free;
+	public void setIs_free(boolean free) {
+		this.is_free = free;
 	}
 
 	public String getFree_detail() {
@@ -132,12 +132,12 @@ public class UserDTO {
 		this.date_of_birth = date_of_birth;
 	}
 
-	public boolean isSex() {
-		return sex;
+	public boolean isIs_male() {
+		return is_male;
 	}
 
-	public void setSex(boolean sex) {
-		this.sex = sex;
+	public void setIs_male(boolean sex) {
+		this.is_male = sex;
 	}
 
 	public Integer getArea_id() {
