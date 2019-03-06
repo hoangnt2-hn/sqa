@@ -7,6 +7,16 @@ public class QuanHuyenDTO {
 	String name;
 	String type;
 	List<XaPhuongThiTranDTO> xaPhuongThiTranDTOs;
+	AreaDTO areaDTO;
+
+	public QuanHuyenDTO(String maqh) {
+		super();
+		this.maqh = maqh;
+	}
+
+	public QuanHuyenDTO() {
+		super();
+	}
 
 	public String getMaqh() {
 		return maqh;
@@ -38,6 +48,14 @@ public class QuanHuyenDTO {
 
 	public void setXaPhuongThiTranDTOs(List<XaPhuongThiTranDTO> xaPhuongThiTranDTOs) {
 		this.xaPhuongThiTranDTOs = xaPhuongThiTranDTOs;
+	}
+
+	public AreaDTO getAreaDTO() {
+		return areaDTO;
+	}
+
+	public void setAreaDTO(AreaDTO areaDTO) {
+		this.areaDTO = areaDTO;
 	}
 
 }

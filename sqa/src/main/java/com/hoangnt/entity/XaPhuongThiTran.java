@@ -15,10 +15,18 @@ public class XaPhuongThiTran {
 
 	String name;
 	String type;
-	String maqh;
+
+	public XaPhuongThiTran() {
+		super();
+	}
+
+	public XaPhuongThiTran(String xaid) {
+		super();
+		this.xaid = xaid;
+	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "matp")
+	@JoinColumn(name = "maqh")
 	QuanHuyen quanHuyen;
 
 	public String getXaid() {
@@ -43,14 +51,6 @@ public class XaPhuongThiTran {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getMaqh() {
-		return maqh;
-	}
-
-	public void setMaqh(String maqh) {
-		this.maqh = maqh;
 	}
 
 	public QuanHuyen getQuanHuyen() {

@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,9 +14,18 @@ public class Address {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Integer id;
-	String province;
-	String district;
-	String town;
+
+	@OneToOne()
+	@JoinColumn(name = "matp")
+	private TinhThanhPho province;
+
+	@OneToOne()
+	@JoinColumn(name = "maqh")
+	private QuanHuyen district;
+
+	@OneToOne()
+	@JoinColumn(name = "xaid")
+	private XaPhuongThiTran town;
 
 	public Integer getId() {
 		return id;
@@ -24,27 +35,27 @@ public class Address {
 		this.id = id;
 	}
 
-	public String getProvince() {
+	public TinhThanhPho getProvince() {
 		return province;
 	}
 
-	public void setProvince(String province) {
+	public void setProvince(TinhThanhPho province) {
 		this.province = province;
 	}
 
-	public String getDistrict() {
+	public QuanHuyen getDistrict() {
 		return district;
 	}
 
-	public void setDistrict(String district) {
+	public void setDistrict(QuanHuyen district) {
 		this.district = district;
 	}
 
-	public String getTown() {
+	public XaPhuongThiTran getTown() {
 		return town;
 	}
 
-	public void setTown(String town) {
+	public void setTown(XaPhuongThiTran town) {
 		this.town = town;
 	}
 

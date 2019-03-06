@@ -27,9 +27,9 @@ public class UserController {
 	UserService userService;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO) {
+	public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO) {                     //Ktra thong tin dang nhap
 		UserDTO userDTO = userService.getUserByNameAccount(accountDTO.getUsername());
-		if (userDTO != null && BCrypt.checkpw(accountDTO.getPassword(), userDTO.getAccountDTO().getPassword())) {
+		if (userDTO != null && BCrypt.checkpw(accountDTO.getPassword(), userDTO.getAccountDTO().getPassword())) { //check password
 
 			return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 		}
@@ -37,8 +37,8 @@ public class UserController {
 	}
 
 	@PostMapping("/users/register")
-	public ResponseEntity<Void> addUser(@RequestBody UserDTO userDTO) {
-		if (userService.getUserByNameAccount(userDTO.getAccountDTO().getUsername()) == null) {
+	public ResponseEntity<Void> addUser(@RequestBody UserDTO userDTO){						//them user
+		if (userService.getUserByNameAccount(userDTO.getAccountDTO().getUsername()) == null) {//check usernam da ton tai chua 
 			userService.addUserDTO(userDTO);
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		} else
@@ -46,8 +46,23 @@ public class UserController {
 
 	}
 
+	@PatchMapping("/users/update")
+	public ResponseEntity<Void> updateUser(@RequestBody UserDTO userDTO) {					//update user
+		if (userService.getUserByNameAccount(userDTO.getAccountDTO().getUsername()) == null) { //check usernam da ton tai chua 
+			userService.updateUserDTO(userDTO);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		} else
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
+	@DeleteMapping("users/delete/{id}")			
+	public ResponseEntity<Void> deleteUser(@PathVariable int id) {							//xoa user
+		userService.deleteUser(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
 	@GetMapping("/users/{id}")
-	public ResponseEntity<?> getUserById(@PathVariable int id) {
+	public ResponseEntity<?> getUserById(@PathVariable int id) {							//lay user theo id
 		if (userService.getUserById(id) != null) {
 			return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
 		}
@@ -55,27 +70,16 @@ public class UserController {
 	}
 
 	@GetMapping("/users/name/{name}")
-	public ResponseEntity<?> getUserByName(@PathVariable String name) {
-		if (userService.getUserByNameAccount(name) != null) {
+	public ResponseEntity<?> getUserByName(@PathVariable String name) {						//lay user theo name
+		if (userService.getUserByNameAccount(name) != null) {								//check name co ton tai khong
 			return new ResponseEntity<UserDTO>(userService.getUserByNameAccount(name), HttpStatus.OK);
 		}
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
 	@GetMapping("/users")
-	public ResponseEntity<List<UserDTO>> getAllUser() {
+	public ResponseEntity<List<UserDTO>> getAllUser() {										//lay tat ca user
 		return new ResponseEntity<List<UserDTO>>(userService.getAllUser(), HttpStatus.OK);
 	}
 
-	@PatchMapping("/users/update")
-	public ResponseEntity<Void> updateUser(@RequestBody UserDTO userDTO) {
-		userService.updateUserDTO(userDTO);
-		return new ResponseEntity<Void>(HttpStatus.OK);
-	}
-
-	@DeleteMapping("users/delete/{id}")
-	public ResponseEntity<Void> deleteUser(@PathVariable int id) {
-		userService.deleteUser(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}
 }

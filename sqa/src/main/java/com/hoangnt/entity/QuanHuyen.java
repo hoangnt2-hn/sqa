@@ -18,12 +18,24 @@ public class QuanHuyen {
 	String name;
 	String type;
 
+	public QuanHuyen() {
+		super();
+	}
+
+	public QuanHuyen(String maqh) {
+		this.maqh = maqh;
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "matp")
 	TinhThanhPho tinhThanhPho;
 
 	@OneToMany(mappedBy = "quanHuyen", fetch = FetchType.LAZY)
 	List<XaPhuongThiTran> xaPhuongThiTrans;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_area")
+	Area area;
 
 	public String getMaqh() {
 		return maqh;
@@ -63,6 +75,14 @@ public class QuanHuyen {
 
 	public void setXaPhuongThiTrans(List<XaPhuongThiTran> xaPhuongThiTrans) {
 		this.xaPhuongThiTrans = xaPhuongThiTrans;
+	}
+
+	public Area getArea() {
+		return area;
+	}
+
+	public void setArea(Area area) {
+		this.area = area;
 	}
 
 }

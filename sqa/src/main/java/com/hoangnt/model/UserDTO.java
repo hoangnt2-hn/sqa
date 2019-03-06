@@ -14,7 +14,6 @@ public class UserDTO {
 	String free_detail;
 	String phone;
 	Integer role_id;
-	Integer area_id;
 	private AddressDTO addressDTO;
 	private AccountDTO accountDTO;
 	private SalaryDTO salaryDTO;
@@ -138,14 +137,6 @@ public class UserDTO {
 
 	public void setIs_male(boolean sex) {
 		this.is_male = sex;
-	}
-
-	public Integer getArea_id() {
-		return area_id;
-	}
-
-	public void setArea_id(Integer area_id) {
-		this.area_id = area_id;
 	}
 
 }

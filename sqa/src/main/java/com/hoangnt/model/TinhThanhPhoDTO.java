@@ -8,6 +8,16 @@ public class TinhThanhPhoDTO {
 	String type;
 	List<QuanHuyenDTO> quanHuyenDTOs;
 
+	
+	public TinhThanhPhoDTO(String matp) {
+		super();
+		this.matp = matp;
+	}
+
+	public TinhThanhPhoDTO() {
+		super();
+	}
+
 	public String getMatp() {
 		return matp;
 	}

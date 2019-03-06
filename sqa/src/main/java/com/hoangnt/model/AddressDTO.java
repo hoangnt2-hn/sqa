@@ -2,9 +2,9 @@ package com.hoangnt.model;
 
 public class AddressDTO {
 	Integer id;
-	String province;
-	String district;
-	String town;
+	TinhThanhPhoDTO province;
+	QuanHuyenDTO district;
+	XaPhuongThiTranDTO town;
 
 	public Integer getId() {
 		return id;
@@ -14,28 +14,28 @@ public class AddressDTO {
 		this.id = id;
 	}
 
-	public String getProvince() {
+	public TinhThanhPhoDTO getProvince() {
 		return province;
 	}
 
-	public void setProvince(String province) {
-		this.province = province;
+	public void setProvince(TinhThanhPhoDTO tinhThanhPhoDTO) {
+		this.province = tinhThanhPhoDTO;
 	}
 
-	public String getDistrict() {
+	public QuanHuyenDTO getDistrict() {
 		return district;
 	}
 
-	public void setDistrict(String district) {
-		this.district = district;
+	public void setDistrict(QuanHuyenDTO quanHuyenDTO) {
+		this.district = quanHuyenDTO;
 	}
 
-	public String getTown() {
+	public XaPhuongThiTranDTO getTown() {
 		return town;
 	}
 
-	public void setTown(String town) {
-		this.town = town;
+	public void setTown(XaPhuongThiTranDTO xaPhuongThiTranDTO) {
+		this.town = xaPhuongThiTranDTO;
 	}
 
 }

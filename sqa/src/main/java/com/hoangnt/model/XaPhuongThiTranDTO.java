@@ -6,6 +6,15 @@ public class XaPhuongThiTranDTO {
 	String name;
 	String type;
 
+	public XaPhuongThiTranDTO(String xaid) {
+		super();
+		this.xaid = xaid;
+	}
+
+	public XaPhuongThiTranDTO() {
+		super();
+	}
+
 	public String getXaid() {
 		return xaid;
 	}

@@ -8,7 +8,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hoangnt.entity.Area;
 import com.hoangnt.entity.QuanHuyen;
+import com.hoangnt.model.AreaDTO;
 import com.hoangnt.model.QuanHuyenDTO;
 import com.hoangnt.model.XaPhuongThiTranDTO;
 import com.hoangnt.repository.QuanHuyenRepository;
@@ -28,6 +30,15 @@ public class QuanHuyenServiceImpl implements QuanHuyenService {
 		quanHuyenDTO.setMaqh(quanHuyen.getMaqh());
 		quanHuyenDTO.setName(quanHuyen.getName());
 		quanHuyenDTO.setType(quanHuyen.getType());
+		
+		AreaDTO areaDTO=new AreaDTO();
+		Area area=quanHuyen.getArea();
+		areaDTO.setId(area.getId());
+		areaDTO.setMax_sal(area.getMax_sal());
+		areaDTO.setMin_sal(area.getMin_sal());
+		areaDTO.setName(area.getName());
+		quanHuyenDTO.setAreaDTO(areaDTO);
+		
 		List<XaPhuongThiTranDTO> xaPhuongThiTranDTOs = new ArrayList<>();
 
 		quanHuyen.getXaPhuongThiTrans().forEach(xa -> {

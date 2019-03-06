@@ -20,13 +20,11 @@ public class User {
 	Integer id;
 	@Column(name = "full_name")
 	String full_name;
-	
-	
+
 	String id_person;
 	String date_of_birth;
 	boolean is_male;
-	
-	
+
 	boolean is_vol;
 	String career;
 	boolean is_free;
@@ -37,11 +35,7 @@ public class User {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "role_id")
 	Role role;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="area_id")
-	Area area;
-	
+
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "address_id")
 	private Address address;
@@ -175,12 +169,4 @@ public class User {
 		this.is_male = sex;
 	}
 
-	public Area getArea() {
-		return area;
-	}
-
-	public void setArea(Area area) {
-		this.area = area;
-	}
-	
 }

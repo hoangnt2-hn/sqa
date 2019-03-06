@@ -16,6 +16,15 @@ public class TinhThanhPho {
 	String name;
 	String type;
 
+	public TinhThanhPho() {
+		super();
+	}
+
+	public TinhThanhPho(String matp) {
+		super();
+		this.matp = matp;
+	}
+
 	@OneToMany(mappedBy = "tinhThanhPho", fetch = FetchType.LAZY)
 	List<QuanHuyen> quanHuyens;
 
