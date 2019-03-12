@@ -92,12 +92,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public void updatePassword(String password, int id) {
+		User user=userRepository.getOne(id);
+		accountRepository.updatePassword(password, user.getAccount().getId());
+		
+	}
+
+	@Override
 	public User addUserDTO(UserDTO userDTO) { // them user
 		User user = new User();
 
 		Account account = new Account();
 
-		account.setUsername(removeAccent(userDTO.getFull_name()));
+		account.setUsername(userDTO.getEmail());
 
 		account.setPassword(BCrypt.hashpw(chuanHoaDate(userDTO.getDate_of_birth()), BCrypt.gensalt(12)));
 		accountRepository.save(account);
@@ -109,7 +116,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUserDTO(UserDTO userDTO) { // cap nhat usser
+	public void updateUserDTO(UserDTO userDTO) { // cap nhat user
 		User user = userRepository.getOne(userDTO.getId());
 
 		middle(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop user

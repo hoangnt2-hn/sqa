@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hoangnt.entity.User;
 import com.hoangnt.model.AccountDTO;
+import com.hoangnt.model.ResetPasswordDTO;
 import com.hoangnt.model.UserDTO;
 import com.hoangnt.service.UserService;
 import com.hoangnt.service.impl.UserServiceImpl;
@@ -54,7 +55,7 @@ public class UserController {
 
 			MimeMessage message = javaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-			String html = "<div>Username : "+user.getAccount().getUsername()+"</div></br><div>Password : "+UserServiceImpl.chuanHoaDate(userDTO.getDate_of_birth())+"</div></br><div>Please don't provide this information to anyone in any form !!!</div>";
+			String html = "<div>Username : " + user.getAccount().getUsername() + "</div></br><div>Password : "+ UserServiceImpl.chuanHoaDate(userDTO.getDate_of_birth()) + "</div></br><div>Please don't provide this information to anyone in any form !!!</div>";
 			message.setContent(html, "text/html");
 			helper.setTo(userDTO.getEmail());
 			helper.setSubject("Login information for social insurance calculation service");
@@ -74,6 +75,18 @@ public class UserController {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		} else
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
+	@PatchMapping("/users/update/password/{id}")
+	public ResponseEntity<?> updatePassword(@RequestBody ResetPasswordDTO resetPasswordDTO, @PathVariable int id) {
+		UserDTO userDTO = userService.getUserById(id);
+
+		if (!(resetPasswordDTO.getNew_pass().equals(resetPasswordDTO.getOld_pass())) && userDTO != null && BCrypt.checkpw(resetPasswordDTO.getOld_pass(), userDTO.getAccountDTO().getPassword())) {
+			userService.updatePassword(BCrypt.hashpw(resetPasswordDTO.getNew_pass(), BCrypt.gensalt(12)), id);
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+
+		return new ResponseEntity<String>("fail", HttpStatus.NO_CONTENT);
 	}
 
 	@DeleteMapping("users/delete/{id}")

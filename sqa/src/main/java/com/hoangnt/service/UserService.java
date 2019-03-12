@@ -11,7 +11,7 @@ public interface UserService {
 	UserDTO getUserById(int id);
 
 	UserDTO getUserByNameAccount(String name);
-	
+
 	UserDTO getUserByEmail(String email);
 
 	void updateUserDTO(UserDTO userDTO);
@@ -19,5 +19,7 @@ public interface UserService {
 	void deleteUser(int id);
 
 	List<UserDTO> getAllUser();
+
+	void updatePassword(String password, int id);
 
 }
