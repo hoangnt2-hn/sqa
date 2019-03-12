@@ -2,17 +2,17 @@ package com.hoangnt.service;
 
 import java.util.List;
 
-import com.hoangnt.model.QuanHuyenDTO;
-import com.hoangnt.model.TinhThanhPhoDTO;
+import com.hoangnt.entity.User;
 import com.hoangnt.model.UserDTO;
-import com.hoangnt.model.XaPhuongThiTranDTO;
 
 public interface UserService {
-	void addUserDTO(UserDTO userDTO);
+	User addUserDTO(UserDTO userDTO);
 
 	UserDTO getUserById(int id);
 
 	UserDTO getUserByNameAccount(String name);
+	
+	UserDTO getUserByEmail(String email);
 
 	void updateUserDTO(UserDTO userDTO);
 

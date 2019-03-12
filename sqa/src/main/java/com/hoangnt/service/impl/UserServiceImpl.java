@@ -1,7 +1,9 @@
 package com.hoangnt.service.impl;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
@@ -49,58 +51,78 @@ public class UserServiceImpl implements UserService {
 	SalaryRepository salaryRepository;
 
 	@Override
-	public List<UserDTO> getAllUser() {   						//get tat ca user
+	public List<UserDTO> getAllUser() { // get tat ca user
 		List<UserDTO> userDTOs = new ArrayList<UserDTO>();
 		userRepository.findAll().forEach(user -> {
-			userDTOs.add(middleware(user));  					//goi ham middleware de convert du lieu tu lop user sang lop userDTO
+			userDTOs.add(middleware(user)); // goi ham middleware de convert du lieu tu lop user sang lop userDTO
 		});
 		return userDTOs;
 	}
 
 	@Override
-	public UserDTO getUserById(int id) {						//get user theo id
+	public UserDTO getUserById(int id) { // get user theo id
 		User user = userRepository.getOne(id);
-		if (user != null) {										
-			return middleware(user);							//goi ham middleware de convert du lieu tu lop user sang lop userDTO
+		if (user != null) {
+			return middleware(user); // goi ham middleware de convert du lieu tu lop user sang lop userDTO
 		}
 		return null;
 	}
 
 	@Override
-	public void deleteUser(int id) {							//xoa user theo id
+	public void deleteUser(int id) { // xoa user theo id
 		userRepository.deleteById(id);
 	}
 
 	@Override
-	public UserDTO getUserByNameAccount(String name) {			//get user the name
+	public UserDTO getUserByNameAccount(String name) { // get user the name
 		User user = userRepository.findByNameAccount(name);
 		if (user != null) {
-			return middleware(user);							//goi ham middleware de convert du lieu tu lop user sang lop userDTO
+			return middleware(user); // goi ham middleware de convert du lieu tu lop user sang lop userDTO
 		}
 		return null;
 	}
 
 	@Override
-	public void addUserDTO(UserDTO userDTO) {					//them user 
-		User user = new User();
-		middle(user, userDTO);									//goi ham middle de convert du lieu tu lop userDTO sang lop user
+	public UserDTO getUserByEmail(String email) {
+		User user = userRepository.findByEmail(email);
+		if (user != null) {
+			return middleware(user); // goi ham middleware de convert du lieu tu lop user sang lop userDTO
+		}
+		return null;
 	}
 
 	@Override
-	public void updateUserDTO(UserDTO userDTO) {				//cap nhat usser
+	public User addUserDTO(UserDTO userDTO) { // them user
+		User user = new User();
+
+		Account account = new Account();
+
+		account.setUsername(removeAccent(userDTO.getFull_name()));
+
+		account.setPassword(BCrypt.hashpw(chuanHoaDate(userDTO.getDate_of_birth()), BCrypt.gensalt(12)));
+		accountRepository.save(account);
+		user.setAccount(account);
+
+		middle(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop user
+
+		return user;
+	}
+
+	@Override
+	public void updateUserDTO(UserDTO userDTO) { // cap nhat usser
 		User user = userRepository.getOne(userDTO.getId());
 
-		middle(user, userDTO);									//goi ham middle de convert du lieu tu lop userDTO sang lop user
+		middle(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop user
 
 	}
 
-	public UserDTO middleware(User user) {						//convert du lieu tu user sang userDTO
+	public UserDTO middleware(User user) { // convert du lieu tu user sang userDTO
 		UserDTO userDTO = new UserDTO(0);
 		if (user.getId() > 0) {
 
 			userDTO.setId(user.getId());
 			userDTO.setFull_name(user.getFull_name());
-
+			userDTO.setEmail(user.getEmail());
 			userDTO.setId_person(user.getId_person());
 			userDTO.setDate_of_birth(user.getDate_of_birth());
 			userDTO.setIs_male(user.isIs_male());
@@ -134,7 +156,7 @@ public class UserServiceImpl implements UserService {
 			quanHuyenDTO.setMaqh(quanHuyen.getMaqh());
 			quanHuyenDTO.setName(quanHuyen.getName());
 			quanHuyenDTO.setType(quanHuyen.getType());
-			
+
 			AreaDTO areaDTO = new AreaDTO();
 			Area area = user.getAddress().getDistrict().getArea();
 			areaDTO.setId(area.getId());
@@ -167,9 +189,9 @@ public class UserServiceImpl implements UserService {
 		return userDTO;
 	}
 
-	public void middle(User user, UserDTO userDTO) {					//convert du lieu tu userDTO sang user
+	public void middle(User user, UserDTO userDTO) { // convert du lieu tu userDTO sang user
 		user.setFull_name(userDTO.getFull_name());
-
+		user.setEmail(userDTO.getEmail());
 		user.setId_person(userDTO.getId_person());
 		user.setDate_of_birth(userDTO.getDate_of_birth());
 		user.setIs_male(userDTO.isIs_male());
@@ -179,13 +201,6 @@ public class UserServiceImpl implements UserService {
 		user.setIs_free(userDTO.isIs_free());
 		user.setFree_detail(userDTO.getFree_detail());
 		user.setPhone(userDTO.getPhone());
-
-		Account account = new Account();
-		account.setUsername(userDTO.getAccountDTO().getUsername());
-
-		account.setPassword(BCrypt.hashpw(userDTO.getAccountDTO().getPassword(), BCrypt.gensalt(12)));
-		accountRepository.save(account);
-		user.setAccount(account);
 
 		Address address = new Address();
 
@@ -210,6 +225,25 @@ public class UserServiceImpl implements UserService {
 		user.setRole(new Role(userDTO.getRole_id()));
 
 		userRepository.save(user);
+	}
+
+	public static String removeAccent(String s) {
+		String s2;
+		String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
+		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+		String s1[] = pattern.matcher(temp).replaceAll("").trim().toLowerCase().split("\\s");
+		s2 = s1[s1.length - 1];
+		for (int i = 0; i < s1.length - 1; i++) {
+			s2 += s1[i].substring(0, 1);
+		}
+		return s2;
+	}
+
+	public static String chuanHoaDate(String s) {
+		String s2;
+		String s1[] = s.split("-");
+		s2 = s1[2] + s1[1] + s1[0].substring(2, 4);
+		return s2;
 	}
 
 }

@@ -3,7 +3,7 @@ package com.hoangnt.model;
 public class UserDTO {
 	Integer id;
 	String full_name;
-
+	String email;
 	String id_person;
 	String date_of_birth;
 	boolean is_male;
@@ -137,6 +137,14 @@ public class UserDTO {
 
 	public void setIs_male(boolean sex) {
 		this.is_male = sex;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
