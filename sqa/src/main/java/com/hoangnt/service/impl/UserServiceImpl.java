@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.hoangnt.entity.Account;
 import com.hoangnt.entity.Address;
 import com.hoangnt.entity.Area;
+import com.hoangnt.entity.Coefficient;
 import com.hoangnt.entity.QuanHuyen;
 import com.hoangnt.entity.Role;
 import com.hoangnt.entity.Salary;
@@ -30,6 +31,7 @@ import com.hoangnt.model.UserDTO;
 import com.hoangnt.model.XaPhuongThiTranDTO;
 import com.hoangnt.repository.AccountRepository;
 import com.hoangnt.repository.AddressRepository;
+import com.hoangnt.repository.CoefficientRepository;
 import com.hoangnt.repository.SalaryRepository;
 import com.hoangnt.repository.UserRepository;
 import com.hoangnt.service.UserService;
@@ -49,6 +51,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	SalaryRepository salaryRepository;
+
+	@Autowired
+	CoefficientRepository coefficientRepository;
 
 	@Override
 	public List<UserDTO> getAllUser() { // get tat ca user
@@ -93,9 +98,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void updatePassword(String password, int id) {
-		User user=userRepository.getOne(id);
+		User user = userRepository.getOne(id);
 		accountRepository.updatePassword(password, user.getAccount().getId());
-		
+
 	}
 
 	@Override
@@ -192,6 +197,8 @@ public class UserServiceImpl implements UserService {
 
 			userDTO.setSalaryDTO(salaryDTO);
 
+			Coefficient coefficient = coefficientRepository.getOne(1);
+			userDTO.setInsurance(insurance(coefficient.getCoe(), user));
 		}
 		return userDTO;
 	}
@@ -251,6 +258,32 @@ public class UserServiceImpl implements UserService {
 		String s1[] = s.split("-");
 		s2 = s1[2] + s1[1] + s1[0].substring(2, 4);
 		return s2;
+	}
+
+	public Double insurance(Double coe, User user) {
+		if (user.isIs_free() && !user.isIs_vol()) {
+			return 0.0;
+		}
+
+		Double total_salary = user.getSalary().getMain_sal() + user.getSalary().getPosition_allowrance()
+				+ user.getSalary().getRes_allowrance();
+
+		if (user.isIs_vol()) {
+			if (total_salary < user.getAddress().getDistrict().getArea().getMin_sal()) {
+				return (coe * user.getAddress().getDistrict().getArea().getMin_sal());
+			}
+			if (total_salary > user.getAddress().getDistrict().getArea().getMax_sal()) {
+				return (coe * user.getAddress().getDistrict().getArea().getMax_sal());
+			}
+		}
+
+		if (total_salary > user.getAddress().getDistrict().getArea().getMax_sal())
+			return 0.0;
+
+		if (total_salary < user.getAddress().getDistrict().getArea().getMin_sal())
+			return 0.0;
+
+		return coe * total_salary;
 	}
 
 }

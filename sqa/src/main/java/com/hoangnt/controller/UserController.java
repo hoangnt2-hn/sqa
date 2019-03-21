@@ -27,7 +27,7 @@ import com.hoangnt.model.UserDTO;
 import com.hoangnt.service.UserService;
 import com.hoangnt.service.impl.UserServiceImpl;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class UserController {
 	@Autowired

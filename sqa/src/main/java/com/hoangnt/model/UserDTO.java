@@ -14,6 +14,7 @@ public class UserDTO {
 	String free_detail;
 	String phone;
 	Integer role_id;
+	Double insurance;
 	private AddressDTO addressDTO;
 	private AccountDTO accountDTO;
 	private SalaryDTO salaryDTO;
@@ -145,6 +146,14 @@ public class UserDTO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Double getInsurance() {
+		return insurance;
+	}
+
+	public void setInsurance(Double insurance) {
+		this.insurance = insurance;
 	}
 
 }
