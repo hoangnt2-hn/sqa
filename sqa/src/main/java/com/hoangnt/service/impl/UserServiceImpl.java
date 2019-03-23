@@ -106,11 +106,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User addUserDTO(UserDTO userDTO) { // them user
 		User user = new User();
-
 		Account account = new Account();
-
 		account.setUsername(userDTO.getEmail());
-
 		account.setPassword(BCrypt.hashpw(chuanHoaDate(userDTO.getDate_of_birth()), BCrypt.gensalt(12)));
 		accountRepository.save(account);
 		user.setAccount(account);
