@@ -260,7 +260,7 @@ public class UserServiceImpl implements UserService {
 		return s2;
 	}
 
-	public Double insurance(Double coe, User user) {
+	public static Double insurance(Double coe, User user) {
 		if (user.isIs_free() && !user.isIs_vol()) {
 			return 0.0;
 		}
@@ -272,13 +272,10 @@ public class UserServiceImpl implements UserService {
 			if (total_salary < user.getAddress().getDistrict().getArea().getMin_sal()) {
 				return (coe * user.getAddress().getDistrict().getArea().getMin_sal());
 			}
-			if (total_salary > user.getAddress().getDistrict().getArea().getMax_sal()) {
-				return (coe * user.getAddress().getDistrict().getArea().getMax_sal());
-			}
 		}
 
 		if (total_salary > user.getAddress().getDistrict().getArea().getMax_sal())
-			return 0.0;
+			return (coe * user.getAddress().getDistrict().getArea().getMax_sal());
 
 		if (total_salary < user.getAddress().getDistrict().getArea().getMin_sal())
 			return 0.0;
