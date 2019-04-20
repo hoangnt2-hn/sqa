@@ -38,10 +38,8 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO) { // Ktra thong tin dang nhap
-		UserDTO userDTO = userService.getUserByNameAccount(accountDTO.getUsername());
-		if (userDTO != null && BCrypt.checkpw(accountDTO.getPassword(), userDTO.getAccountDTO().getPassword())) { // check
-																													// password
-
+		UserDTO userDTO = userService.login(accountDTO);
+		if (userDTO != null ) { 
 			return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 		}
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);

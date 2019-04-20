@@ -57,20 +57,20 @@ public class InsuranceTests {
 		return UserServiceImpl.insurance(coefficientDTO.getCoe(), user);
 
 	}
-
+	
 	@Test
 	public void contextLoads() {
-		assertEquals(new Double(2384000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
+		assertEquals(new Double(2224000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
 	}
 
 	@Test
 	public void contextLoads1() {
-		assertEquals(new Double(2384000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
+		assertEquals(new Double(2224000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
 	}
 
 	@Test
 	public void contextLoads2() {
-		assertEquals(new Double(2384000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
+		assertEquals(new Double(2224000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
 	}
 
 }

@@ -3,6 +3,7 @@ package com.hoangnt.service;
 import java.util.List;
 
 import com.hoangnt.entity.User;
+import com.hoangnt.model.AccountDTO;
 import com.hoangnt.model.UserDTO;
 
 public interface UserService {
@@ -13,6 +14,8 @@ public interface UserService {
 	UserDTO getUserByNameAccount(String name);
 
 	UserDTO getUserByEmail(String email);
+	
+	UserDTO login(AccountDTO accountDTO);
 
 	void updateUserDTO(UserDTO userDTO);
 
@@ -21,5 +24,7 @@ public interface UserService {
 	List<UserDTO> getAllUser();
 
 	void updatePassword(String password, int id);
+	
+	
 
 }

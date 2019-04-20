@@ -97,6 +97,15 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public UserDTO login(AccountDTO accountDTO) {
+		UserDTO userDTO = getUserByNameAccount(accountDTO.getUsername());
+		if (userDTO != null && BCrypt.checkpw(accountDTO.getPassword(), userDTO.getAccountDTO().getPassword())) {
+			return userDTO;
+		}
+		return null;
+	}
+
+	@Override
 	public void updatePassword(String password, int id) {
 		User user = userRepository.getOne(id);
 		accountRepository.updatePassword(password, user.getAccount().getId());
@@ -105,16 +114,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User addUserDTO(UserDTO userDTO) { // them user
-		User user = new User();
-		Account account = new Account();
-		account.setUsername(userDTO.getEmail());
-		account.setPassword(BCrypt.hashpw(chuanHoaDate(userDTO.getDate_of_birth()), BCrypt.gensalt(12)));
-		accountRepository.save(account);
-		user.setAccount(account);
+		if (getUserByEmail(userDTO.getEmail()) == null) {
+			User user = new User();
+			Account account = new Account();
+			account.setUsername(userDTO.getEmail());
+			account.setPassword(BCrypt.hashpw(chuanHoaDate(userDTO.getDate_of_birth()), BCrypt.gensalt(12)));
+			accountRepository.save(account);
+			user.setAccount(account);
 
-		middle(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop user
+			middle(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop user
 
-		return user;
+			return user;
+		}
+		return null;
 	}
 
 	@Override
