@@ -38,11 +38,14 @@ public class UserController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO) { // Ktra thong tin dang nhap
-		UserDTO userDTO = userService.login(accountDTO);
-		if (userDTO != null ) { 
-			return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
+		UserDTO userDTO = userService.getUserByEmail(accountDTO.getUsername());
+		if (userService.getUserByEmail(accountDTO.getUsername()) == null) {
+			return new ResponseEntity<Void>(HttpStatus.ALREADY_REPORTED);
 		}
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		if (userService.login(accountDTO) == null) {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
 
 	@PostMapping("/users/register")
@@ -53,7 +56,9 @@ public class UserController {
 
 			MimeMessage message = javaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-			String html = "<div>Username : " + user.getAccount().getUsername() + "</div></br><div>Password : "+ UserServiceImpl.chuanHoaDate(userDTO.getDate_of_birth()) + "</div></br><div>Please don't provide this information to anyone in any form !!!</div>";
+			String html = "<div>Username : " + user.getAccount().getUsername() + "</div></br><div>Password : "
+					+ UserServiceImpl.chuanHoaDate(userDTO.getDate_of_birth())
+					+ "</div></br><div>Please don't provide this information to anyone in any form !!!</div>";
 			message.setContent(html, "text/html");
 			helper.setTo(userDTO.getEmail());
 			helper.setSubject("Login information for social insurance calculation service");
@@ -67,19 +72,18 @@ public class UserController {
 
 	@PatchMapping("/users/update")
 	public ResponseEntity<Void> updateUser(@RequestBody UserDTO userDTO) { // update user
-		if (userService.getUserByEmail(userDTO.getEmail()) == null) { // check email da ton
-																		// tai chua
-			userService.updateUserDTO(userDTO);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		} else
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+
+		userService.updateUserDTO(userDTO);
+		return new ResponseEntity<Void>(HttpStatus.OK);
+
 	}
 
 	@PatchMapping("/users/update/password/{id}")
 	public ResponseEntity<?> updatePassword(@RequestBody ResetPasswordDTO resetPasswordDTO, @PathVariable int id) {
 		UserDTO userDTO = userService.getUserById(id);
 
-		if (!(resetPasswordDTO.getNew_pass().equals(resetPasswordDTO.getOld_pass())) && userDTO != null && BCrypt.checkpw(resetPasswordDTO.getOld_pass(), userDTO.getAccountDTO().getPassword())) {
+		if (!(resetPasswordDTO.getNew_pass().equals(resetPasswordDTO.getOld_pass())) && userDTO != null
+				&& BCrypt.checkpw(resetPasswordDTO.getOld_pass(), userDTO.getAccountDTO().getPassword())) {
 			userService.updatePassword(BCrypt.hashpw(resetPasswordDTO.getNew_pass(), BCrypt.gensalt(12)), id);
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
@@ -113,6 +117,5 @@ public class UserController {
 	public ResponseEntity<List<UserDTO>> getAllUser() { // lay tat ca user
 		return new ResponseEntity<List<UserDTO>>(userService.getAllUser(), HttpStatus.OK);
 	}
-	
 
 }
