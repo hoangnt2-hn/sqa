@@ -60,17 +60,26 @@ public class InsuranceTests {
 	
 	@Test
 	public void contextLoads() {
-		assertEquals(new Double(2224000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
+		assertEquals(new Double(0.0), middleware(59000001.0, 300000.0, 700000.0, 1, false, true));
 	}
 
 	@Test
 	public void contextLoads1() {
-		assertEquals(new Double(2224000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
+		assertEquals(new Double(334400.0), middleware(1000000.0, 300000.0, 700000.0, 1, true, true));
 	}
 
 	@Test
 	public void contextLoads2() {
-		assertEquals(new Double(2224000.0), middleware(59000001.0, 300000.0, 700000.0, 1, true, true));
+		assertEquals(new Double(2224000.0), middleware(59000000.0, 300000.0, 700000.0, 1, true, true));
 	}
+	@Test
+	public void contextLoads3() {
+		assertEquals(new Double(0.0), middleware(1000000.0, 300000.0, 700000.0, 1, false, true));
+	}
+	@Test
+	public void contextLoads4() {
+		assertEquals(new Double(520000.0), middleware(5000000.0, 1000000.0, 500000.0, 1, true, true));
+	}
+	
 
 }

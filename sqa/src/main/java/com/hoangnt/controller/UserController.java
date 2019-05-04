@@ -42,7 +42,7 @@ public class UserController {
 		if (userService.getUserByEmail(accountDTO.getUsername()) == null) {
 			return new ResponseEntity<Void>(HttpStatus.ALREADY_REPORTED);
 		}
-		if (userService.login(accountDTO) == null) {
+		if (userService.login(accountDTO) == null) { 
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);

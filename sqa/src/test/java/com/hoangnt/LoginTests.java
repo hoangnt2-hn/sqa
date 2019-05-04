@@ -31,30 +31,34 @@ public class LoginTests {
 	@Autowired
 	UserService userService;
 
-	List<AccountDTO> accountDTOs = new ArrayList<>();
-
-	@Before
-	public void midleware() throws IOException {
-		FileInputStream excelFile = new FileInputStream(new File("C:\\Users\\abc\\Desktop\\LoginTest.xlsx"));
-
-		Workbook workbook = new XSSFWorkbook(excelFile);
-		Sheet datatypeSheet = workbook.getSheetAt(0);
-		Iterator<Row> iterator = datatypeSheet.iterator();
-		Row firstRow = iterator.next();
-		Cell firstCell = firstRow.getCell(0);
-		firstCell.getStringCellValue();
-		while (iterator.hasNext()) {
-			Row currentRow = iterator.next();
-			AccountDTO accountDTO = new AccountDTO();
-			accountDTO.setUsername(currentRow.getCell(0).getStringCellValue());
-			accountDTO.setPassword(currentRow.getCell(1).getStringCellValue());
-			accountDTOs.add(accountDTO);
-		}
-		workbook.close();
-	}
-
-	public boolean login(AccountDTO accountDTO) {
-
+//	List<AccountDTO> accountDTOs = new ArrayList<>();
+//
+//	@Before
+//	public void midleware() throws IOException {
+//		FileInputStream excelFile = new FileInputStream(new File("C:\\Users\\abc\\Desktop\\LoginTest.xlsx"));
+//
+//		Workbook workbook = new XSSFWorkbook(excelFile);
+//		Sheet datatypeSheet = workbook.getSheetAt(0);
+//		Iterator<Row> iterator = datatypeSheet.iterator();
+//		Row firstRow = iterator.next();
+//		Cell firstCell = firstRow.getCell(0);
+//		firstCell.getStringCellValue();
+//		while (iterator.hasNext()) {
+//			Row currentRow = iterator.next();
+//			AccountDTO accountDTO = new AccountDTO();
+//			accountDTO.setUsername(currentRow.getCell(0).getStringCellValue());
+//			accountDTO.setPassword(currentRow.getCell(1).getStringCellValue());
+//			accountDTOs.add(accountDTO);
+//		}
+//		workbook.close();
+//	}
+	
+	
+	public boolean login(String username,String password) {
+		AccountDTO accountDTO=new AccountDTO();
+		accountDTO.setUsername(username);
+		accountDTO.setPassword(password);
+		
 		if (userService.login(accountDTO) != null) {
 			return true;
 		}
@@ -64,11 +68,12 @@ public class LoginTests {
 
 	@Test
 	public void contextLoads() {
-		assertEquals(true, login(accountDTOs.get(0)));
+		assertEquals(true, login("trihoangdeptrai@gmail.com","12345678"));
 	}
 	@Test
 	public void contextLoads1() {
-		assertEquals(true, login(accountDTOs.get(1)));
+		assertEquals(false, login("dddddddd@gmail.com","220197"));
+		
 	}
 
 }
