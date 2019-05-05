@@ -34,7 +34,7 @@ public class QuanHuyen {
 	@OneToMany(mappedBy = "quanHuyen", fetch = FetchType.LAZY)
 	List<XaPhuongThiTran> xaPhuongThiTrans;
 
-	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_area")
 	Area area;
 
