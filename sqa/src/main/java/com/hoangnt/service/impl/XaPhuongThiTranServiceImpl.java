@@ -18,7 +18,7 @@ public class XaPhuongThiTranServiceImpl implements XaPhuongThiTranService {
 	XaPhuongThiTranRepository xaPhuongThiTranRepository;
 
 	@Override
-	public XaPhuongThiTranDTO findById(String id) {
+	public XaPhuongThiTranDTO findById(String id) { //lay xa phuong thi tran theo id
 		XaPhuongThiTranDTO xaPhuongThiTranDTO = new XaPhuongThiTranDTO();
 		XaPhuongThiTran xaPhuongThiTran = xaPhuongThiTranRepository.getOne(id);
 

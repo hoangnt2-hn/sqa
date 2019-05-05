@@ -20,15 +20,14 @@ public class CoefficientServiceImpl implements CoefficientService {
 	CoefficientRepository coefficientRepository;
 
 	@Override
-	public void addCoefficientDTO(CoefficientDTO coefficientDTO) {
+	public void addCoefficientDTO(CoefficientDTO coefficientDTO) { //them he so tinh bao hiem
 		Coefficient coefficient = new Coefficient();
 		coefficient.setCoe(coefficientDTO.getCoe());
-//		coefficient.setId(coefficientDTO.getId());
 		coefficientRepository.save(coefficient);
 	}
 
 	@Override
-	public CoefficientDTO getCoefficientById(int id) {
+	public CoefficientDTO getCoefficientById(int id) {  //lay he so tinh bao hiem 
 		Coefficient coefficient = coefficientRepository.getOne(id);
 		CoefficientDTO coefficientDTO = new CoefficientDTO();
 		coefficientDTO.setId(coefficient.getId());
@@ -37,21 +36,20 @@ public class CoefficientServiceImpl implements CoefficientService {
 	}
 
 	@Override
-	public void updateCoefficientDTO(CoefficientDTO coefficientDTO) {
+	public void updateCoefficientDTO(CoefficientDTO coefficientDTO) { //cap nhat he so tinh bao hiem
 		Coefficient coefficient = coefficientRepository.getOne(coefficientDTO.getId());
 		coefficient.setCoe(coefficientDTO.getCoe());
-//		coefficient.setId(coefficientDTO.getId());
 		coefficientRepository.save(coefficient);
 	}
 
 	@Override
-	public void deleteCoefficient(int id) {
+	public void deleteCoefficient(int id) { // xoa he so tinh bao hiem
 		coefficientRepository.deleteById(id);
 
 	}
 
 	@Override
-	public List<CoefficientDTO> getAllCoefficient() {
+	public List<CoefficientDTO> getAllCoefficient() { // lay tat ca cac he so tinh bao hiem
 		List<CoefficientDTO> coefficientDTOs = new ArrayList<CoefficientDTO>();
 		coefficientRepository.findAll().forEach(coefficient -> {
 			CoefficientDTO coefficientDTO = new CoefficientDTO();

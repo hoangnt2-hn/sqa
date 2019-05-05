@@ -27,7 +27,7 @@ import com.hoangnt.model.UserDTO;
 import com.hoangnt.service.UserService;
 import com.hoangnt.service.impl.UserServiceImpl;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600) // client goi thong qua cong 3600
 @RestController
 public class UserController {
 	@Autowired
@@ -36,24 +36,27 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
+	// api login
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AccountDTO accountDTO) { // Ktra thong tin dang nhap
 		UserDTO userDTO = userService.getUserByEmail(accountDTO.getUsername());
 		if (userService.getUserByEmail(accountDTO.getUsername()) == null) {
 			return new ResponseEntity<Void>(HttpStatus.ALREADY_REPORTED);
 		}
-		if (userService.login(accountDTO) == null) { 
+		if (userService.login(accountDTO) == null) {
 			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<UserDTO>(userDTO, HttpStatus.OK);
 	}
 
+	// api dang ki
 	@PostMapping("/users/register")
 	public ResponseEntity<Void> addUser(@RequestBody UserDTO userDTO) throws MessagingException { // them user
 		if (userService.getUserByEmail(userDTO.getEmail()) == null) {// check email da ton
 																		// tai chua
 			User user = userService.addUserDTO(userDTO);
 
+			// cau hinh gui mail thong tin dang nhap cho user
 			MimeMessage message = javaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
 			String html = "<div>Username : " + user.getAccount().getUsername() + "</div></br><div>Password : "
@@ -70,6 +73,23 @@ public class UserController {
 
 	}
 
+	// api xoa user theo id
+	@DeleteMapping("users/delete/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable int id) { // xoa user
+		userService.deleteUser(id);
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
+	// api lay user theo id
+	@GetMapping("/users/{id}")
+	public ResponseEntity<?> getUserById(@PathVariable int id) { // lay user theo id
+		if (userService.getUserById(id) != null) {
+			return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
+		}
+		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+	}
+
+	// api update
 	@PatchMapping("/users/update")
 	public ResponseEntity<Void> updateUser(@RequestBody UserDTO userDTO) { // update user
 
@@ -78,6 +98,7 @@ public class UserController {
 
 	}
 
+	// api update password
 	@PatchMapping("/users/update/password/{id}")
 	public ResponseEntity<?> updatePassword(@RequestBody ResetPasswordDTO resetPasswordDTO, @PathVariable int id) {
 		UserDTO userDTO = userService.getUserById(id);
@@ -91,20 +112,7 @@ public class UserController {
 		return new ResponseEntity<String>("fail", HttpStatus.NO_CONTENT);
 	}
 
-	@DeleteMapping("users/delete/{id}")
-	public ResponseEntity<Void> deleteUser(@PathVariable int id) { // xoa user
-		userService.deleteUser(id);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}
-
-	@GetMapping("/users/{id}")
-	public ResponseEntity<?> getUserById(@PathVariable int id) { // lay user theo id
-		if (userService.getUserById(id) != null) {
-			return new ResponseEntity<UserDTO>(userService.getUserById(id), HttpStatus.OK);
-		}
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}
-
+	// api lay user theo name account
 	@GetMapping("/users/name/{name}")
 	public ResponseEntity<?> getUserByName(@PathVariable String name) { // lay user theo name
 		if (userService.getUserByNameAccount(name) != null) { // check name co ton tai khong
@@ -113,6 +121,7 @@ public class UserController {
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
+	// api lay danh sach tat ca user
 	@GetMapping("/users")
 	public ResponseEntity<List<UserDTO>> getAllUser() { // lay tat ca user
 		return new ResponseEntity<List<UserDTO>>(userService.getAllUser(), HttpStatus.OK);

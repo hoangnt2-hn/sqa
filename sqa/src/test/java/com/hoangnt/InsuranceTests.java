@@ -28,6 +28,7 @@ public class InsuranceTests {
 	@Autowired
 	CoefficientService coefficientService;
 
+	// tinh so tien bao hiem phai dong
 	public Double middleware(Double main_sal, Double position_allowrance, Double res_allowrance, int area,
 			boolean is_vol, boolean is_free) {
 		User user = new User();
@@ -52,34 +53,42 @@ public class InsuranceTests {
 		user.setIs_free(is_free);
 		user.setIs_vol(is_vol);
 
-		CoefficientDTO coefficientDTO = coefficientService.getCoefficientById(1);
+		CoefficientDTO coefficientDTO = coefficientService.getCoefficientById(1); // lay doi tuong chua he so bao hiem
 
 		return UserServiceImpl.insurance(coefficientDTO.getCoe(), user);
 
 	}
-	
+
+	// truong hop user la doi tuong duoc mien giam va khong tu nguyen dong
 	@Test
 	public void contextLoads() {
 		assertEquals(new Double(0.0), middleware(59000001.0, 300000.0, 700000.0, 1, false, true));
 	}
 
+	// truong hop doi tuong co tong so luong nho hon muc luong toi thieu cua vung
+	// nhung doi tuong tu nguyen dong bao hiem
 	@Test
 	public void contextLoads1() {
 		assertEquals(new Double(334400.0), middleware(1000000.0, 300000.0, 700000.0, 1, true, true));
 	}
 
+	// truong hop doi tuong co tong so luong lon hon muc toi da cua vung
 	@Test
 	public void contextLoads2() {
 		assertEquals(new Double(2224000.0), middleware(59000000.0, 300000.0, 700000.0, 1, true, true));
 	}
+
+	// truong hop doi tuong co tong so luong nho hon muc luong toi thieu cua vung
 	@Test
 	public void contextLoads3() {
 		assertEquals(new Double(0.0), middleware(1000000.0, 300000.0, 700000.0, 1, false, true));
 	}
+
+	// truong hop doi tuong co muc luong trong khoang dong bao hiem va khong duoc
+	// mien giam
 	@Test
 	public void contextLoads4() {
 		assertEquals(new Double(520000.0), middleware(5000000.0, 1000000.0, 500000.0, 1, true, true));
 	}
-	
 
 }

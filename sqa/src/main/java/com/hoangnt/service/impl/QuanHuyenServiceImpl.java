@@ -24,7 +24,7 @@ public class QuanHuyenServiceImpl implements QuanHuyenService {
 	QuanHuyenRepository quanHuyenRepository;
 
 	@Override
-	public QuanHuyenDTO findById(String id) {
+	public QuanHuyenDTO findById(String id) { //lay quan huyen theo id kem theo danh sach xa 
 		QuanHuyenDTO quanHuyenDTO = new QuanHuyenDTO();
 		QuanHuyen quanHuyen = quanHuyenRepository.getOne(id);
 		quanHuyenDTO.setMaqh(quanHuyen.getMaqh());

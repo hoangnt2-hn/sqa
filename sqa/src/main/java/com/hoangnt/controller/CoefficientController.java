@@ -19,7 +19,7 @@ import com.hoangnt.service.CoefficientService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
-public class CoefficientController {
+public class CoefficientController {   //cac api lien quan den he so dong bao hiem
 	@Autowired
 	CoefficientService coefficientService;
 

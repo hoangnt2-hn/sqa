@@ -17,7 +17,7 @@ public class QuanHuyenController {
 	@Autowired
 	QuanHuyenService quanHuyenService;
 
-	@GetMapping("location/district/{id}")
+	@GetMapping("location/district/{id}")  // api tra ve huyen theo ma huyen
 	public ResponseEntity<?> getDistrictById(@PathVariable String id) {
 		QuanHuyenDTO quanHuyenDTO = quanHuyenService.findById(id);
 		if (quanHuyenDTO != null) {

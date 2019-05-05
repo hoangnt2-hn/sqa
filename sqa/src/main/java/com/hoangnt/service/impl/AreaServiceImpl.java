@@ -21,7 +21,7 @@ public class AreaServiceImpl implements AreaService {
 	AreaRepository areaRepository;
 
 	@Override
-	public void addAreaDTO(AreaDTO areaDTO) {
+	public void addAreaDTO(AreaDTO areaDTO) { // theo vung dong bao hiem
 		Area area = new Area();
 		area.setName(areaDTO.getName());
 		area.setMin_sal(areaDTO.getMin_sal());
@@ -31,7 +31,7 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	@Override
-	public AreaDTO getAreaById(int id) {
+	public AreaDTO getAreaById(int id) {  //lay vung theo id
 		Area area = areaRepository.getOne(id);
 
 		AreaDTO areaDTO = new AreaDTO();
@@ -45,7 +45,7 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	@Override
-	public void updateAreaDTO(AreaDTO areaDTO) {
+	public void updateAreaDTO(AreaDTO areaDTO) {  //cap nhat vung
 		Area area = areaRepository.getOne(areaDTO.getId());
 		area.setName(areaDTO.getName());
 		area.setMin_sal(areaDTO.getMin_sal());
@@ -56,13 +56,13 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	@Override
-	public void deleteArea(int id) {
+	public void deleteArea(int id) { //xoa vung theo id
 		areaRepository.deleteById(id);
 
 	}
 
 	@Override
-	public List<AreaDTO> getAllArea() {
+	public List<AreaDTO> getAllArea() { //lay tat ca cac vung
 		List<AreaDTO> areaDTOs = new ArrayList<AreaDTO>();
 		areaRepository.findAll().forEach(area -> {
 			AreaDTO areaDTO = new AreaDTO();

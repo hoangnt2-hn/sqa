@@ -11,6 +11,7 @@ import com.hoangnt.ultis.MyConstants;
 
 @Configuration
 public class MailConfig {
+	// cau hinh lop java mail
 	@Bean
 	public JavaMailSender getJavaMailSender() {
 		JavaMailSenderImpl mailSenderImpl = new JavaMailSenderImpl();

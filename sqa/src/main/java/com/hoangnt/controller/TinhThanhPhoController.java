@@ -19,12 +19,12 @@ public class TinhThanhPhoController {
 	@Autowired
 	TinhThanhPhoService tinhThanhPhoService;
 
-	@GetMapping("location/province")
+	@GetMapping("location/province") //api tra ve list thanh pho
 	public ResponseEntity<List<TinhThanhPhoDTO>> getAll() {
 		return new ResponseEntity<List<TinhThanhPhoDTO>>(tinhThanhPhoService.findAll(), HttpStatus.OK);
 	}
 
-	@GetMapping("location/province/{id}")
+	@GetMapping("location/province/{id}") // api tra ve thanh pho theo id thanh pho
 	public ResponseEntity<?> getProvinceById(@PathVariable String id) {
 		TinhThanhPhoDTO tinhThanhPhoDTO = tinhThanhPhoService.findById(id);
 		if (tinhThanhPhoDTO != null) {

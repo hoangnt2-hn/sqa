@@ -2,6 +2,7 @@ package com.hoangnt.entity;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -33,7 +34,7 @@ public class QuanHuyen {
 	@OneToMany(mappedBy = "quanHuyen", fetch = FetchType.LAZY)
 	List<XaPhuongThiTran> xaPhuongThiTrans;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_area")
 	Area area;
 

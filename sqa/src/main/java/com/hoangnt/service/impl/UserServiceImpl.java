@@ -1,9 +1,7 @@
 package com.hoangnt.service.impl;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
@@ -55,12 +53,12 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	CoefficientRepository coefficientRepository;
 
-	
 	@Override
 	public List<UserDTO> getAllUser() { // get tat ca user
 		List<UserDTO> userDTOs = new ArrayList<UserDTO>();
 		userRepository.findAll().forEach(user -> {
-			userDTOs.add(middleware(user)); // goi ham middleware de convert du lieu tu lop user sang lop userDTO
+			userDTOs.add(convertDataFromUserToUserDTO(user)); // goi ham middleware de convert du lieu tu lop user sang
+																// lop userDTO
 		});
 		return userDTOs;
 	}
@@ -69,7 +67,8 @@ public class UserServiceImpl implements UserService {
 	public UserDTO getUserById(int id) { // get user theo id
 		User user = userRepository.getOne(id);
 		if (user != null) {
-			return middleware(user); // goi ham middleware de convert du lieu tu lop user sang lop userDTO
+			return convertDataFromUserToUserDTO(user); // goi ham middleware de convert du lieu tu lop user sang lop
+														// userDTO
 		}
 		return null;
 	}
@@ -80,25 +79,27 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO getUserByNameAccount(String name) { // get user the name
+	public UserDTO getUserByNameAccount(String name) { // get user theo name
 		User user = userRepository.findByNameAccount(name);
 		if (user != null) {
-			return middleware(user); // goi ham middleware de convert du lieu tu lop user sang lop userDTO
+			return convertDataFromUserToUserDTO(user); // goi ham middleware de convert du lieu tu lop user sang lop
+														// userDTO
 		}
 		return null;
 	}
 
 	@Override
-	public UserDTO getUserByEmail(String email) {
+	public UserDTO getUserByEmail(String email) {// get user theo email
 		User user = userRepository.findByEmail(email);
 		if (user != null) {
-			return middleware(user); // goi ham middleware de convert du lieu tu lop user sang lop userDTO
+			return convertDataFromUserToUserDTO(user); // goi ham middleware de convert du lieu tu lop user sang lop
+														// userDTO
 		}
 		return null;
 	}
 
 	@Override
-	public UserDTO login(AccountDTO accountDTO) {
+	public UserDTO login(AccountDTO accountDTO) { // ham dang nhap
 		UserDTO userDTO = getUserByNameAccount(accountDTO.getUsername());
 		if (userDTO != null && BCrypt.checkpw(accountDTO.getPassword(), userDTO.getAccountDTO().getPassword())) {
 			return userDTO;
@@ -107,7 +108,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updatePassword(String password, int id) {
+	public void updatePassword(String password, int id) {// ham update password
 		User user = userRepository.getOne(id);
 		accountRepository.updatePassword(password, user.getAccount().getId());
 
@@ -119,11 +120,13 @@ public class UserServiceImpl implements UserService {
 			User user = new User();
 			Account account = new Account();
 			account.setUsername(userDTO.getEmail());
+			// password duoc theo vao csdl dua tren ngay thang nam sinh cua user
 			account.setPassword(BCrypt.hashpw(chuanHoaDate(userDTO.getDate_of_birth()), BCrypt.gensalt(12)));
 			accountRepository.save(account);
 			user.setAccount(account);
 
-			middle(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop user
+			convertDataFromUserDTOToUser(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop
+															// user
 
 			return user;
 		}
@@ -131,14 +134,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void updateUserDTO(UserDTO userDTO) { // cap nhat user
+	public User updateUserDTO(UserDTO userDTO) { // cap nhat user
 		User user = userRepository.getOne(userDTO.getId());
 
-		middle(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop user
-
+		convertDataFromUserDTOToUser(user, userDTO); // goi ham middle de convert du lieu tu lop userDTO sang lop user
+		return user;
 	}
 
-	public UserDTO middleware(User user) { // convert du lieu tu user sang userDTO
+	public UserDTO convertDataFromUserToUserDTO(User user) { // convert du lieu tu user sang userDTO
 		UserDTO userDTO = new UserDTO(0);
 		if (user.getId() > 0) {
 
@@ -213,7 +216,7 @@ public class UserServiceImpl implements UserService {
 		return userDTO;
 	}
 
-	public void middle(User user, UserDTO userDTO) { // convert du lieu tu userDTO sang user
+	public void convertDataFromUserDTOToUser(User user, UserDTO userDTO) { // convert du lieu tu userDTO sang user
 		user.setFull_name(userDTO.getFull_name());
 		user.setEmail(userDTO.getEmail());
 		user.setId_person(userDTO.getId_person());
@@ -251,46 +254,38 @@ public class UserServiceImpl implements UserService {
 		userRepository.save(user);
 	}
 
-	public static String removeAccent(String s) {
-		String s2;
-		String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
-		Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
-		String s1[] = pattern.matcher(temp).replaceAll("").trim().toLowerCase().split("\\s");
-		s2 = s1[s1.length - 1];
-		for (int i = 0; i < s1.length - 1; i++) {
-			s2 += s1[i].substring(0, 1);
-		}
-		return s2;
-	}
-
-	public static String chuanHoaDate(String s) {
+	public static String chuanHoaDate(String s) { // convert ngay sinh cua user sang dinh dang ddmmyy
 		String s2;
 		String s1[] = s.split("-");
 		s2 = s1[2] + s1[1] + s1[0].substring(2, 4);
 		return s2;
 	}
 
-	public static Double insurance(Double coe, User user) {
-		if (user.isIs_free() && !user.isIs_vol()) {
+	public static Double insurance(Double coe, User user) {// ham tinh so tien bao hiem pai dong cua user
+		if (user.isIs_free() && !user.isIs_vol()) { // truogn hop user duoc mien giam va khong tu nguyen dong
 			return 0.0;
 		}
-
+		// tinh tong so luong cua user
 		Double total_salary = user.getSalary().getMain_sal() + user.getSalary().getPosition_allowrance()
 				+ user.getSalary().getRes_allowrance();
 
-		if (user.isIs_vol()) {
-			if (total_salary < user.getAddress().getDistrict().getArea().getMin_sal()) {
+		if (user.isIs_vol()) {// truong user tu nguye dong
+			if (total_salary < user.getAddress().getDistrict().getArea().getMin_sal()) { // tong luong nho hon muc luong
+																							// toi thieu cua vung
 				return (coe * user.getAddress().getDistrict().getArea().getMin_sal());
 			}
 		}
 
-		if (total_salary > user.getAddress().getDistrict().getArea().getMax_sal())
+		if (total_salary > user.getAddress().getDistrict().getArea().getMax_sal()) // tong luong lon hon mua luong toi
+																					// da cua vung
 			return (coe * user.getAddress().getDistrict().getArea().getMax_sal());
 
-		if (total_salary < user.getAddress().getDistrict().getArea().getMin_sal())
+		if (total_salary < user.getAddress().getDistrict().getArea().getMin_sal())// tong luong nho hon muc luong toi
+																					// thieu cua vung
 			return 0.0;
 
-		return coe * total_salary;
+		return coe * total_salary; // truong hop doi tuong co muc luong trong khoang dong bao hiem va khong duoc
+									// mien giam
 	}
 
 }

@@ -17,7 +17,7 @@ public class XaPhuongThiTranController {
 	@Autowired
 	XaPhuongThiTranService xaPhuongThiTranService;
 
-	@GetMapping("location/town/{id}")
+	@GetMapping("location/town/{id}")  //api tra ve xa phuong theo is xa phuong
 	public ResponseEntity<?> getTownById(@PathVariable String id) {
 		XaPhuongThiTranDTO xaPhuongThiTranDTO = xaPhuongThiTranService.findById(id);
 		if (xaPhuongThiTranDTO != null) {

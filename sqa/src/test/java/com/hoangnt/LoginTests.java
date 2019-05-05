@@ -2,19 +2,6 @@ package com.hoangnt;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,49 +18,30 @@ public class LoginTests {
 	@Autowired
 	UserService userService;
 
-//	List<AccountDTO> accountDTOs = new ArrayList<>();
-//
-//	@Before
-//	public void midleware() throws IOException {
-//		FileInputStream excelFile = new FileInputStream(new File("C:\\Users\\abc\\Desktop\\LoginTest.xlsx"));
-//
-//		Workbook workbook = new XSSFWorkbook(excelFile);
-//		Sheet datatypeSheet = workbook.getSheetAt(0);
-//		Iterator<Row> iterator = datatypeSheet.iterator();
-//		Row firstRow = iterator.next();
-//		Cell firstCell = firstRow.getCell(0);
-//		firstCell.getStringCellValue();
-//		while (iterator.hasNext()) {
-//			Row currentRow = iterator.next();
-//			AccountDTO accountDTO = new AccountDTO();
-//			accountDTO.setUsername(currentRow.getCell(0).getStringCellValue());
-//			accountDTO.setPassword(currentRow.getCell(1).getStringCellValue());
-//			accountDTOs.add(accountDTO);
-//		}
-//		workbook.close();
-//	}
-	
-	
-	public boolean login(String username,String password) {
-		AccountDTO accountDTO=new AccountDTO();
+	// ham login username password cua user
+	public boolean login(String username, String password) {
+		AccountDTO accountDTO = new AccountDTO();
 		accountDTO.setUsername(username);
 		accountDTO.setPassword(password);
-		
-		if (userService.login(accountDTO) != null) {
+
+		if (userService.login(accountDTO) != null) { // neu username password cua user la dung
 			return true;
 		}
 
 		return false;
 	}
 
+	// truong hop login account dung
 	@Test
 	public void contextLoads() {
-		assertEquals(true, login("trihoangdeptrai@gmail.com","12345678"));
+		assertEquals(true, login("trihoangdeptrai@gmail.com", "12345678"));
 	}
+
+	// truogn hop login account sai
 	@Test
 	public void contextLoads1() {
-		assertEquals(false, login("dddddddd@gmail.com","220197"));
-		
+		assertEquals(false, login("xzxzxzzx@gmail.com", "220197"));
+
 	}
 
 }

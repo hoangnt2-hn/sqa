@@ -19,17 +19,17 @@ import com.hoangnt.service.AreaService;
 
 @CrossOrigin(origins = "http://localhost:3000", maxAge = 3600)
 @RestController
-public class AreaController {
+public class AreaController {   // cac api lien quan den vung  dong bao hiem
 
 	@Autowired
 	AreaService areaService;
 
-	@GetMapping("/areas")
+	@GetMapping("/areas")   //api tra ve tat ca cac vung
 	public ResponseEntity<List<AreaDTO>> getAllArea() {
 		return new ResponseEntity<List<AreaDTO>>(areaService.getAllArea(), HttpStatus.OK);
 	}
 
-	@GetMapping("/areas/{id}")
+	@GetMapping("/areas/{id}") //api tra ve vugn theo id
 	public ResponseEntity<AreaDTO> getAreaById(@PathVariable int id) {
 		return new ResponseEntity<AreaDTO>(areaService.getAreaById(id), HttpStatus.OK);
 	}
